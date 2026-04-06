@@ -150,6 +150,13 @@ a.waterfall__item {
   display: block;
 }
 
+/* Mobile and tablet: show tags by default */
+@media (max-width: 1023px) {
+  .waterfall__tag {
+    opacity: 1;
+  }
+}
+
 /* Mobile: stack into a single column */
 @media (max-width: 639px) {
   .waterfall {

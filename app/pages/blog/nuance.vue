@@ -15,6 +15,7 @@ useHead({ title: 'Nuance — Aaron Lee' })
         }"
       >
         <magic-player-video />
+        <magic-player-video-controls />
       </magic-player-provider>
     </div>
 
@@ -166,6 +167,15 @@ useHead({ title: 'Nuance — Aaron Lee' })
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.blog__video :deep(.magic-player-video-controls) {
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
+.blog__video:hover :deep(.magic-player-video-controls) {
+  opacity: 1;
 }
 
 .blog__content {

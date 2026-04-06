@@ -9,8 +9,8 @@ Personal portfolio website for ACAD 275. Built with Nuxt 4 and Vue 3. Uses Bun a
 - Package Manager: Bun — always use `bun install`, `bun run dev`, etc. Never npm/yarn/pnpm.
 - UI Toolkit: Vue Equipment (`@maas/vue-equipment ^1.0.0-beta.55`) by Magic as a Service
   - Docs: https://www.vue.equipment/overview/getting-started.html
-  - Unstyled plugins and composables for modals, drawers, menus, etc.
   - Registered as a Nuxt module: `@maas/vue-equipment/nuxt`
+  - Only the `MagicPlayer` plugin is currently used (for blog page videos).
   - Peer deps (e.g. @vueuse/core, focus-trap, defu, motion) are auto-installed by Bun.
 
 ## Vue Equipment — Nuxt Setup
@@ -26,15 +26,16 @@ In nuxt.config.ts, registered as a module with the `MagicPlayer` plugin:
 - `<magic-player-provider>`, `<magic-player-video>` are globally available.
 - Always pass a unique string id prop to `<magic-player-provider>`.
 - All components are completely unstyled. You must write all CSS yourself.
-- **Do NOT use `<magic-player-video-controls />`** — its CSS has broken `@import` paths that cause PostCSS build errors.
+- `<magic-player-video-controls />` is used in blog pages for hover-to-show playback controls.
+- **Do NOT import its CSS directly from the package** — the `@import` paths are broken and cause PostCSS errors. A manually combined CSS file exists at `app/assets/css/magic-player-video-controls.css` and is registered in `nuxt.config.ts`.
 
 ## Project Structure (Nuxt 4)
 
     app/
-      app.vue                    # Root component — must contain <NuxtPage />
+      app.vue                    # Root component — <NuxtLayout> + <NuxtPage />
       pages/
         index.vue                # Home (/) — waterfall video grid
-        about.vue                # About page (/about)
+        about.vue                # About page (/about) — centered bio
         blog/
           nova.vue               # Blog post (/blog/nova)
           nuance.vue             # Blog post (/blog/nuance)
@@ -42,24 +43,54 @@ In nuxt.config.ts, registered as a module with the `MagicPlayer` plugin:
       components/
         VideoPlayer.vue          # Lazy-loading video with WebM/MP4 sources + poster
       layouts/
-        default.vue              # Site shell: header + floating pill nav
+        default.vue              # Site shell: header + floating pill nav + contact popover
       assets/
-        css/main.css             # Global styles, CSS variables, reset
+        css/main.css             # Global styles, CSS variables, reset, .prose utility
+        css/magic-player-video-controls.css  # Combined MagicPlayer controls CSS (workaround)
     public/
       videos/                    # Optimized video files (MP4, WebM, posters)
+      videos/posters/            # First-frame JPEG posters for lazy loading
+      videos/originals/          # Uncompressed video backups
+      icons/                     # SVG icons (heroicons)
+    claude-docs/
+      video-treatment.md         # Full video optimization process documentation
     nuxt.config.ts               # Nuxt configuration
 
+## Navigation & Routing
+- Floating pill nav at bottom center with Work, About, Contact.
+- Work and About are NuxtLink routes.
+- Contact is a popover modal (not a page) — toggles above the pill nav with spring animation.
+- Blog items on the waterfall grid link to `/blog/:slug` via NuxtLink.
+- Deployment items open external URLs in new tabs (`target="_blank"`).
+- Items with no tag/link are non-interactive divs.
+
+## Waterfall Grid (index.vue)
+- 3-column layout with items sized by video aspect ratio.
+- Each item has a `tag` (Blog or Deployment) shown on hover (desktop) or always visible (mobile/tablet ≤1023px).
+- Blog tags use inline newspaper SVG icon, Deployment tags use inline external-link SVG icon.
+- Icons are inline SVGs with `stroke="currentColor"` to inherit text color.
+- Do NOT use `<img>` for icons inside tags — `currentColor` won't work.
+
+## Blog Pages
+- Layout: centered column (max-width 720px), video on top via MagicPlayer, article below.
+- Article content uses the global `.prose` class (defined in main.css) for markdown-style formatting.
+- All text uses Geist font, medium weight (500) for headers, regular (400) for body. No bold/semibold.
+- Video aspect ratios must match actual video dimensions.
+
 ## Key CSS Variables (defined in main.css :root)
-- `--color-bg` — page background
-- `--color-surface` — card/nav surfaces
-- `--color-text` / `--color-text-muted` — primary and secondary text
+- `--color-bg` — page background (#ffffff)
+- `--color-surface` — card/nav surfaces (#f2f2f2)
+- `--color-text` / `--color-text-muted` — primary (#000000) and secondary text
 - `--color-border` — borders
-- `--page-padding` — consistent inline padding
+- `--color-placeholder` — placeholder backgrounds (#d9d9d9)
+- `--page-padding` — consistent inline padding (24px)
+- `--font-sans` — Geist, system-ui fallback
 
 ## Conventions
 - Always use `<script setup lang="ts">` in every component.
 - Nuxt auto-imports: do NOT manually import ref, computed, useRoute, watch, etc.
 - Components in app/components/ are auto-imported — no manual registration.
+- Do NOT name components starting with "Lazy" — Nuxt reserves that prefix for its own lazy-loading.
 - Use file-based routing via app/pages/.
 - Use semantic HTML for accessibility.
 - Keep components small and single-purpose.
@@ -79,7 +110,8 @@ In nuxt.config.ts, registered as a module with the `MagicPlayer` plugin:
 - Originals are backed up in `public/videos/originals/`.
 
 ## Design Direction
-- Clean, modern, minimal aesthetic
-- Smooth page transitions and micro-interactions
-- Responsive (mobile-first)
-- Accessible (semantic HTML, focus management, contrast)
+- Clean, modern, minimal aesthetic using Geist font
+- Font weights: only regular (400) and medium (500) — no bold or semibold
+- Smooth animations with gentle spring easing where appropriate
+- Responsive: mobile-first, 1-col mobile / 2-col tablet / 3-col desktop
+- Tags visible by default on mobile/tablet, hover-only on desktop
