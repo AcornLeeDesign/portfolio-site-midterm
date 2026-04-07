@@ -6,7 +6,7 @@ useHead({ title: 'About — Aaron Lee' })
   <section class="about">
     <div class="about__bio">
       <p>Aaron Lee is a Product Designer and digital artist based in LA and SF. He's passionate about visual craft, the intersection of design and engineering, psychology (particularly conceptual models), and systems design. God designed him with fingers and so his fingers will be designing too.</p>
-      <p>Incoming Product Design Intern @ ______</p>
+      <p>Incoming Product Design Intern @ DoorDash</p>
     </div>
     <div class="about__spacer" />
   </section>

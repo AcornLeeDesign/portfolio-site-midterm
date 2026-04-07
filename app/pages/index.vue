@@ -13,6 +13,7 @@ interface Project {
   title: string
   aspect: string
   src: string
+  type?: 'image'
   border?: boolean
   tag?: Tag
   slug?: string
@@ -25,16 +26,20 @@ const columns: Project[][] = [
   [
     { id: 1, title: 'Nuance Pure', aspect: '1 / 1', src: '/videos/nuance_pure.mp4', tag: { label: 'Blog', icon: 'blog' }, slug: 'nuance' },
     { id: 2, title: 'Haven 3D', aspect: '9 / 16', src: '/videos/haven_3d.mp4' },
+    { id: 9, title: 'eVTOL', aspect: '3274 / 1454', src: '/images/evtol.png', type: 'image' },
   ],
   [
     { id: 3, title: 'Manta', aspect: '3418 / 2032', src: '/videos/manta.mp4', tag: { label: 'Deployment', icon: 'deployment' }, href: 'https://manta-one.vercel.app/' },
     { id: 4, title: 'Gameboy', aspect: '1158 / 1578', src: '/videos/gameboy.mp4', tag: { label: 'Deployment', icon: 'deployment' }, href: 'https://gameboy-basic.vercel.app/' },
     { id: 8, title: 'Rabbithole', aspect: '2256 / 1464', src: '/videos/rabbithole.mp4', tag: { label: 'Blog', icon: 'blog' }, slug: 'rabbithole' },
+    { id: 10, title: 'Haven', aspect: '1678 / 1080', src: '/images/haven.png', type: 'image' },
   ],
   [
     { id: 5, title: 'Wiggle', aspect: '1738 / 1000', src: '/videos/wiggle.mp4', border: true, tag: { label: 'Deployment', icon: 'deployment' }, href: 'https://wiggle.framer.website/' },
     { id: 6, title: 'Nova Practice', aspect: '1588 / 1288', src: '/videos/nova_practice_V.mp4', border: true, tag: { label: 'Blog', icon: 'blog' }, slug: 'nova' },
     { id: 7, title: 'Pen', aspect: '2038 / 1008', src: '/videos/pen.mp4' },
+    { id: 11, title: 'Watch', aspect: '1920 / 1080', src: '/images/watch_3_4_view.png', type: 'image', border: true },
+    { id: 12, title: 'Chewsy', aspect: '1 / 1', src: '/videos/chewsy_createsc.mp4' },
   ],
 ]
 </script>
@@ -58,7 +63,8 @@ const columns: Project[][] = [
         :class="{ 'waterfall__item--bordered': project.border }"
         :style="{ aspectRatio: project.aspect }"
       >
-        <VideoPlayer :src="project.src" />
+        <img v-if="project.type === 'image'" :src="project.src" :alt="project.title" class="waterfall__image" />
+        <VideoPlayer v-else :src="project.src" />
         <div v-if="project.tag" class="waterfall__tag">
           <span>{{ project.tag.label }}</span>
           <!-- Newspaper icon (Blog) -->
@@ -143,6 +149,13 @@ a.waterfall__item {
   height: calc(100% + 4px);
 }
 
+.waterfall__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .waterfall__item :deep(video) {
   width: 100%;
   height: 100%;
@@ -164,10 +177,4 @@ a.waterfall__item {
   }
 }
 
-/* Tablet: 2 columns, hide the third */
-@media (min-width: 640px) and (max-width: 1023px) {
-  .waterfall__col:nth-child(3) {
-    display: none;
-  }
-}
 </style>

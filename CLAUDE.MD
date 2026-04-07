@@ -48,6 +48,7 @@ In nuxt.config.ts, registered as a module with the `MagicPlayer` plugin:
         css/main.css             # Global styles, CSS variables, reset, .prose utility
         css/magic-player-video-controls.css  # Combined MagicPlayer controls CSS (workaround)
     public/
+      images/                    # Static images (PNG) for waterfall grid
       videos/                    # Optimized video files (MP4, WebM, posters)
       videos/posters/            # First-frame JPEG posters for lazy loading
       videos/originals/          # Uncompressed video backups
@@ -65,14 +66,18 @@ In nuxt.config.ts, registered as a module with the `MagicPlayer` plugin:
 - Items with no tag/link are non-interactive divs.
 
 ## Waterfall Grid (index.vue)
-- 3-column layout with items sized by video aspect ratio.
+- 3-column layout with items sized by aspect ratio.
+- Supports both videos (via `VideoPlayer`) and images (via `<img>` with `type: 'image'`).
 - Each item has a `tag` (Blog or Deployment) shown on hover (desktop) or always visible (mobile/tablet ≤1023px).
 - Blog tags use inline newspaper SVG icon, Deployment tags use inline external-link SVG icon.
 - Icons are inline SVGs with `stroke="currentColor"` to inherit text color.
 - Do NOT use `<img>` for icons inside tags — `currentColor` won't work.
+- Aspect ratios can be manually overridden (e.g. `1 / 1`) — `object-fit: cover` handles cropping.
 
 ## Blog Pages
-- Layout: centered column (max-width 720px), video on top via MagicPlayer, article below.
+- Layout: container max-width 840px, article content max-width 720px (centered within).
+- Videos span the full 840px width via MagicPlayer, with hover-to-show controls.
+- Multiple videos can be stacked vertically below the hero video.
 - Article content uses the global `.prose` class (defined in main.css) for markdown-style formatting.
 - All text uses Geist font, medium weight (500) for headers, regular (400) for body. No bold/semibold.
 - Video aspect ratios must match actual video dimensions.
@@ -105,7 +110,10 @@ In nuxt.config.ts, registered as a module with the `MagicPlayer` plugin:
 
 ## Video Treatment
 - All new videos must go through the optimization process documented in `claude-docs/video-treatment.md`.
-- Steps: get dimensions → compress MP4 (H.264, CRF 30, max 1080px) → generate WebM (VP9) → generate poster JPEG → add to waterfall with correct aspect ratio.
+- **Two quality tiers:**
+  - Waterfall grid: CRF 30, max 1080px width (small display, aggressive compression)
+  - Blog pages: CRF 23, max 1200px width (larger display, higher quality)
+- Steps: get dimensions → backup original → compress MP4 (H.264) → generate WebM (VP9) → generate poster JPEG.
 - The `VideoPlayer` component handles lazy loading, dual-format sources, and poster images automatically.
 - Originals are backed up in `public/videos/originals/`.
 
@@ -113,5 +121,5 @@ In nuxt.config.ts, registered as a module with the `MagicPlayer` plugin:
 - Clean, modern, minimal aesthetic using Geist font
 - Font weights: only regular (400) and medium (500) — no bold or semibold
 - Smooth animations with gentle spring easing where appropriate
-- Responsive: mobile-first, 1-col mobile / 2-col tablet / 3-col desktop
+- Responsive: mobile-first, 1-col mobile / 3-col tablet and desktop
 - Tags visible by default on mobile/tablet, hover-only on desktop

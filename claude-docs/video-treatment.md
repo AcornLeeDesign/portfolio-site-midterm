@@ -45,7 +45,9 @@ Use the width and height values as the `aspect` property in the waterfall grid d
 
 ## 3. Compress MP4 (H.264)
 
-Cap width at 1080px, use CRF 30, strip audio, enable faststart for streaming:
+Two quality tiers depending on where the video is used:
+
+### Waterfall grid (small display, aggressive compression)
 
 ```bash
 ffmpeg -y -i input.mp4 \
@@ -55,14 +57,31 @@ ffmpeg -y -i input.mp4 \
   output.mp4
 ```
 
-## 4. Generate WebM (VP9)
-
-Smaller alternative served to Chrome/Firefox:
+### Blog pages (larger display, higher quality)
 
 ```bash
 ffmpeg -y -i input.mp4 \
+  -vf "scale='min(1200,iw)':-2" \
+  -c:v libx264 -crf 23 -preset slow \
+  -an -movflags +faststart \
+  output.mp4
+```
+
+## 4. Generate WebM (VP9)
+
+Smaller alternative served to Chrome/Firefox. Match the scale to the tier above:
+
+```bash
+# Waterfall
+ffmpeg -y -i input.mp4 \
   -vf "scale='min(1080,iw)':-2" \
   -c:v libvpx-vp9 -crf 35 -b:v 0 \
+  -an \
+  output.webm
+
+# Blog
+ffmpeg -y -i input.mp4 \
+  -c:v libvpx-vp9 -crf 30 -b:v 0 \
   -an \
   output.webm
 ```
