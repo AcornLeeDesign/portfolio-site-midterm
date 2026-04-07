@@ -8,16 +8,22 @@ useHead({ title: 'About — Aaron Lee' })
       <p>Aaron Lee is a Product Designer and digital artist based in LA and SF. He's passionate about visual craft, the intersection of design and engineering, psychology (particularly conceptual models), and systems design. God designed him with fingers and so his fingers will be designing too.</p>
       <p>Incoming Product Design Intern @ ______</p>
     </div>
+    <div class="about__spacer" />
   </section>
 </template>
 
 <style scoped>
 .about {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: calc(100svh - 72px);
   padding-inline: var(--page-padding);
+}
+
+.about__spacer {
+  height: 72px;
 }
 
 .about__bio {
