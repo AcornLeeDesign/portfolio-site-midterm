@@ -19,6 +19,46 @@ useHead({ title: 'Nuance — Aaron Lee' })
       </magic-player-provider>
     </div>
 
+    <div class="blog__video blog__video--landscape">
+      <magic-player-provider
+        id="blog-nuance-mock-call"
+        :options="{ src: '/videos/mock_call.mp4', autoplay: true, loop: true, muted: true }"
+      >
+        <magic-player-video />
+        <magic-player-video-controls />
+      </magic-player-provider>
+    </div>
+
+    <div class="blog__video blog__video--portrait">
+      <magic-player-provider
+        id="blog-nuance-recent-call"
+        :options="{ src: '/videos/recent_call.mp4', autoplay: true, loop: true, muted: true }"
+      >
+        <magic-player-video />
+        <magic-player-video-controls />
+      </magic-player-provider>
+    </div>
+
+    <div class="blog__video blog__video--portrait">
+      <magic-player-provider
+        id="blog-nuance-mood-set"
+        :options="{ src: '/videos/mood_set.mp4', autoplay: true, loop: true, muted: true }"
+      >
+        <magic-player-video />
+        <magic-player-video-controls />
+      </magic-player-provider>
+    </div>
+
+    <div class="blog__video blog__video--portrait">
+      <magic-player-provider
+        id="blog-nuance-home-screen"
+        :options="{ src: '/videos/home_screen.mp4', autoplay: true, loop: true, muted: true }"
+      >
+        <magic-player-video />
+        <magic-player-video-controls />
+      </magic-player-provider>
+    </div>
+
     <div class="blog__content">
       <h1 class="blog__title">Nuance: Bringing Emotional Context Back to Phone Calls</h1>
 
@@ -133,6 +173,7 @@ useHead({ title: 'Nuance — Aaron Lee' })
 
         <p>Nuance is not a finished product; it's a provocation. It imagines a future where assistive tools don't just deliver information, but also restore the emotional texture of human conversation.</p>
       </div>
+
     </div>
   </article>
 </template>
@@ -145,7 +186,7 @@ useHead({ title: 'Nuance — Aaron Lee' })
   gap: 16px;
   padding-inline: var(--page-padding);
   padding-bottom: 6rem;
-  max-width: 720px;
+  max-width: 840px;
   margin-inline: auto;
 }
 
@@ -180,6 +221,7 @@ useHead({ title: 'Nuance — Aaron Lee' })
 
 .blog__content {
   width: 100%;
+  max-width: 720px;
 }
 
 .blog__title {
@@ -189,6 +231,14 @@ useHead({ title: 'Nuance — Aaron Lee' })
   letter-spacing: -0.02em;
   margin-top: 1.5em;
   margin-bottom: 1em;
+}
+
+.blog__video--landscape {
+  aspect-ratio: 1920 / 1080;
+}
+
+.blog__video--portrait {
+  aspect-ratio: 1818 / 1582;
 }
 
 </style>

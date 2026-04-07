@@ -101,7 +101,7 @@ useHead({ title: 'Rabbithole — Aaron Lee' })
   gap: 16px;
   padding-inline: var(--page-padding);
   padding-bottom: 6rem;
-  max-width: 720px;
+  max-width: 840px;
   margin-inline: auto;
 }
 
@@ -136,6 +136,7 @@ useHead({ title: 'Rabbithole — Aaron Lee' })
 
 .blog__content {
   width: 100%;
+  max-width: 720px;
 }
 
 .blog__title {

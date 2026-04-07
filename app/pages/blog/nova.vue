@@ -19,6 +19,36 @@ useHead({ title: 'Designing Nova — Aaron Lee' })
       </magic-player-provider>
     </div>
 
+    <div class="blog__video blog__video--wide">
+      <magic-player-provider
+        id="blog-nova-walkthrough"
+        :options="{ src: '/videos/nova_walkthrough.mp4', autoplay: true, loop: true, muted: true }"
+      >
+        <magic-player-video />
+        <magic-player-video-controls />
+      </magic-player-provider>
+    </div>
+
+    <div class="blog__video blog__video--wide">
+      <magic-player-provider
+        id="blog-nova-quiz-student"
+        :options="{ src: '/videos/quiz_fullscreen_student.mp4', autoplay: true, loop: true, muted: true }"
+      >
+        <magic-player-video />
+        <magic-player-video-controls />
+      </magic-player-provider>
+    </div>
+
+    <div class="blog__video blog__video--wide">
+      <magic-player-provider
+        id="blog-nova-quiz-teacher"
+        :options="{ src: '/videos/quiz_fullscreen_teacher.mp4', autoplay: true, loop: true, muted: true }"
+      >
+        <magic-player-video />
+        <magic-player-video-controls />
+      </magic-player-provider>
+    </div>
+
     <div class="blog__content">
       <h1 class="blog__title">Nova: Offline AI Learning for Schools Without Internet</h1>
 
@@ -160,7 +190,7 @@ useHead({ title: 'Designing Nova — Aaron Lee' })
   gap: 16px;
   padding-inline: var(--page-padding);
   padding-bottom: 6rem;
-  max-width: 720px;
+  max-width: 840px;
   margin-inline: auto;
 }
 
@@ -193,8 +223,13 @@ useHead({ title: 'Designing Nova — Aaron Lee' })
   opacity: 1;
 }
 
+.blog__video--wide {
+  aspect-ratio: 3456 / 1940;
+}
+
 .blog__content {
   width: 100%;
+  max-width: 720px;
 }
 
 .blog__title {
